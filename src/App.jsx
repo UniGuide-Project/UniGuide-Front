@@ -7,12 +7,36 @@ import logo from './assets/logo.png'
 // Shared dictionary translations for Navbar, Landing Page, and Footer
 const appTranslations = {
   uz: {
+    navHome: 'Bosh sahifa',
     navUniversities: 'Universitetlar',
     navSimulator: 'Simulyator',
     navAiMatch: 'AI Match',
     navCareer: 'Karyera',
     navForum: 'Forum',
     loginBtn: 'Kirish / Ro\'yxatdan o\'tish',
+    
+    // Auth screens UZ
+    welcomeBack: 'Xush Kelibsiz',
+    diveBackIn: 'Davom etish uchun ma\'lumotlaringizni kiriting.',
+    emailOrUsername: 'EMAIL / FOYDALANUVCHI NOMI',
+    passwordLabel: 'PAROL',
+    forgotPassword: 'Parolni unutdingizmi?',
+    signInBtn: 'Tizimga kirish',
+    signUpBtn: 'Ro\'yxatdan o\'tish',
+    orDivider: 'YOKI',
+    continueWithGoogle: 'Google orqali kirish',
+    dontHaveAccount: 'Akkauntingiz yo\'qmi?',
+    createAccount: 'Akkaunt Yaratish',
+    joinScholars: 'Elita talabalar va professionallar tarmog\'iga qo\'shiling.',
+    fullNameLabel: 'TO\'LIQ ISM SHARIF',
+    fullNamePlaceholder: 'To\'liq ismingizni kiriting',
+    emailAddressLabel: 'ELEKTRON POCHTA MANZILI',
+    emailAddressPlaceholder: 'name@university.edu',
+    phoneNumberLabel: 'TELEFON RAQAMI',
+    phoneNumberPlaceholder: '+998 (90) 123-45-67',
+    confirmPasswordLabel: 'PAROLNI TASDIQLASH',
+    signUpWithGoogle: 'Google orqali ro\'yxatdan o\'tish',
+    alreadyHaveAccount: 'Akkauntingiz bormi?',
     
     // Landing page UZ
     tag: '⚡ Kelasi Avlod Ta\'lim Intellekti',
@@ -65,12 +89,36 @@ const appTranslations = {
     allRightsReserved: 'DTM Elite Universitet Platformasi. Barcha huquqlar himoyalangan.'
   },
   en: {
+    navHome: 'Home',
     navUniversities: 'Universities',
     navSimulator: 'Simulator',
     navAiMatch: 'AI Match',
     navCareer: 'Career',
     navForum: 'Forum',
     loginBtn: 'Login / Register',
+    
+    // Auth screens EN
+    welcomeBack: 'Welcome Back',
+    diveBackIn: 'Enter your credentials to dive back in.',
+    emailOrUsername: 'EMAIL / USERNAME',
+    passwordLabel: 'PASSWORD',
+    forgotPassword: 'Forgot Password?',
+    signInBtn: 'Sign In',
+    signUpBtn: 'Sign Up',
+    orDivider: 'OR',
+    continueWithGoogle: 'Continue with Google',
+    dontHaveAccount: 'Don\'t have an account?',
+    createAccount: 'Create Your Account',
+    joinScholars: 'Join the elite global network of scholars and professionals.',
+    fullNameLabel: 'FULL NAME',
+    fullNamePlaceholder: 'Enter your legal name',
+    emailAddressLabel: 'EMAIL ADDRESS',
+    emailAddressPlaceholder: 'name@university.edu',
+    phoneNumberLabel: 'PHONE NUMBER',
+    phoneNumberPlaceholder: '+1 (555) 000-0000',
+    confirmPasswordLabel: 'CONFIRM PASSWORD',
+    signUpWithGoogle: 'Sign Up with Google',
+    alreadyHaveAccount: 'Already have an account?',
     
     tag: '⚡ Next-Gen Education Intelligence',
     heroTitlePart1: 'Your Path to University, ',
@@ -122,12 +170,36 @@ const appTranslations = {
     allRightsReserved: 'DTM Elite University Platform. All Rights Reserved.'
   },
   ru: {
+    navHome: 'Главная',
     navUniversities: 'Университеты',
     navSimulator: 'Симулятор',
     navAiMatch: 'AI Match',
     navCareer: 'Карьера',
     navForum: 'Форум',
     loginBtn: 'Войти / Регистрация',
+    
+    // Auth screens RU
+    welcomeBack: 'С возвращением',
+    diveBackIn: 'Введите свои данные для входа.',
+    emailOrUsername: 'EMAIL / ИМЯ ПОЛЬЗОВАТЕЛЯ',
+    passwordLabel: 'ПАРОЛЬ',
+    forgotPassword: 'Забыли пароль?',
+    signInBtn: 'Войти',
+    signUpBtn: 'Зарегистрироваться',
+    orDivider: 'ИЛИ',
+    continueWithGoogle: 'Войти через Google',
+    dontHaveAccount: 'Нет аккаунта?',
+    createAccount: 'Создайте аккаунт',
+    joinScholars: 'Присоединяйтесь к элитной глобальной сети ученых и профессионалов.',
+    fullNameLabel: 'ПОЛНОЕ ИМЯ',
+    fullNamePlaceholder: 'Введите ваше имя',
+    emailAddressLabel: 'ЭЛЕКТРОННАЯ ПОЧТА',
+    emailAddressPlaceholder: 'name@university.edu',
+    phoneNumberLabel: 'НОМЕР ТЕЛЕФОНА',
+    phoneNumberPlaceholder: '+7 (900) 123-45-67',
+    confirmPasswordLabel: 'ПОДТВЕРДИТЕ ПАРОЛЬ',
+    signUpWithGoogle: 'Зарегистрироваться через Google',
+    alreadyHaveAccount: 'Уже есть аккаунт?',
     
     tag: '⚡ Интеллект образования нового поколения',
     heroTitlePart1: 'Ваш путь в университет ',
@@ -182,8 +254,20 @@ const appTranslations = {
 
 function App() {
   const [currentLanguage, setCurrentLanguage] = useState('uz')
-  const [currentPage, setCurrentPage] = useState('universities') // Default to 'universities' based on requested view, can toggle to 'home'
+  const [currentPage, setCurrentPage] = useState('home') // Default to 'home' as requested by the user
   const [langDropdownOpen, setLangDropdownOpen] = useState(false)
+
+  // Auth screen interactive states
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loginEmail, setLoginEmail] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+  
+  const [registerName, setRegisterName] = useState('')
+  const [registerEmail, setRegisterEmail] = useState('')
+  const [registerPhone, setRegisterPhone] = useState('')
+  const [registerPassword, setRegisterPassword] = useState('')
+  const [registerConfirmPassword, setRegisterConfirmPassword] = useState('')
 
   // Simulation variables for landing page
   const [examRunning, setExamRunning] = useState(false)
@@ -281,6 +365,29 @@ function App() {
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`
   }
 
+  const handleNavSimulator = (e) => {
+    if (e) e.preventDefault()
+    setCurrentPage('home')
+    setTimeout(() => {
+      const el = document.getElementById('simulator')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }, 100)
+  }
+
+  const handleNavAiMatch = (e) => {
+    if (e) e.preventDefault()
+    setCurrentPage('home')
+    handleStartAIMatch()
+    setTimeout(() => {
+      const el = document.getElementById('simulator')
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }, 100)
+  }
+
   const languageFlags = {
     uz: '🇺🇿',
     en: '🇬🇧',
@@ -303,7 +410,7 @@ function App() {
 
       {/* Navigation Header */}
       <header className="navbar">
-        <div className="logo" onClick={() => setCurrentPage('home')}>
+        <div className="logo" onClick={() => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           {/* <div className="logo-dot"></div> */}
           <img src={logo} alt="Logo" />
           <span>UniGuide</span>
@@ -311,6 +418,15 @@ function App() {
 
         <nav>
           <ul className="nav-links">
+            <li>
+              <a 
+                href="#home" 
+                className={currentPage === 'home' ? 'active' : ''}
+                onClick={(e) => { e.preventDefault(); setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              >
+                {activeText.navHome}
+              </a>
+            </li>
             <li>
               <a 
                 href="#universities" 
@@ -323,8 +439,7 @@ function App() {
             <li>
               <a 
                 href="#simulator" 
-                className={currentPage === 'home' ? 'active' : ''}
-                onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}
+                onClick={handleNavSimulator}
               >
                 {activeText.navSimulator}
               </a>
@@ -332,7 +447,7 @@ function App() {
             <li>
               <a 
                 href="#ai-match" 
-                onClick={(e) => { e.preventDefault(); setCurrentPage('home'); handleStartAIMatch(); }}
+                onClick={handleNavAiMatch}
               >
                 {activeText.navAiMatch}
               </a>
@@ -417,21 +532,25 @@ function App() {
           {/* Login / Register CTA */}
           <button 
             className="dashboard-btn" 
+            onClick={() => setCurrentPage('login')}
             style={{ 
-              background: 'rgba(187, 225, 250, 0.95)', 
+              background: currentPage === 'login' || currentPage === 'register' ? '#fff' : 'rgba(187, 225, 250, 0.95)', 
               color: '#0f1014', 
               borderColor: '#fff',
               fontSize: '12px',
               fontWeight: 800,
-              padding: '8px 20px'
+              padding: '8px 20px',
+              boxShadow: currentPage === 'login' || currentPage === 'register' ? '0 0 15px rgba(255, 255, 255, 0.3)' : 'none'
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.background = '#fff';
               e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.background = 'rgba(187, 225, 250, 0.95)';
-              e.currentTarget.style.boxShadow = 'none';
+              if (currentPage !== 'login' && currentPage !== 'register') {
+                e.currentTarget.style.background = 'rgba(187, 225, 250, 0.95)';
+                e.currentTarget.style.boxShadow = 'none';
+              }
             }}
             aria-label="Login or Register"
           >
@@ -444,6 +563,253 @@ function App() {
         {currentPage === 'universities' ? (
           /* Render localized Universities listing view */
           <Univerlar lang={currentLanguage} />
+        ) : currentPage === 'login' ? (
+          /* Render Glassmorphic Login Card */
+          <div className="auth-container">
+            <div className="auth-card">
+              <div className="auth-header">
+                <h2>{activeText.welcomeBack}</h2>
+                <p className="auth-subtitle">{activeText.diveBackIn}</p>
+              </div>
+
+              <form onSubmit={(e) => e.preventDefault()} className="auth-form">
+                <div className="input-group">
+                  <label>{activeText.emailOrUsername}</label>
+                  <div className="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <input 
+                      type="text" 
+                      value={loginEmail} 
+                      onChange={(e) => setLoginEmail(e.target.value)} 
+                      placeholder="name@university.edu"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group">
+                  <div className="label-wrapper">
+                    <label>{activeText.passwordLabel}</label>
+                    <a href="#forgot" className="forgot-link" onClick={(e) => e.preventDefault()}>{activeText.forgotPassword}</a>
+                  </div>
+                  <div className="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <input 
+                      type={showPassword ? 'text' : 'password'} 
+                      value={loginPassword} 
+                      onChange={(e) => setLoginPassword(e.target.value)} 
+                      placeholder="••••••••"
+                      required
+                    />
+                    <button 
+                      type="button" 
+                      className="pwd-toggle" 
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                          <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                      ) : (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" className="btn-auth-primary btn-signin">
+                  {activeText.signInBtn}
+                </button>
+
+                <div className="divider-or">
+                  <span>{activeText.orDivider}</span>
+                </div>
+
+                <button type="button" className="btn-auth-google">
+                  <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                  </svg>
+                  <span>{activeText.continueWithGoogle}</span>
+                </button>
+              </form>
+
+              <p className="auth-footer">
+                {activeText.dontHaveAccount}{' '}
+                <span onClick={() => setCurrentPage('register')}>{activeText.signUpBtn}</span>
+              </p>
+            </div>
+          </div>
+        ) : currentPage === 'register' ? (
+          /* Render Glassmorphic Register Card */
+          <div className="auth-container">
+            <div className="auth-card">
+              <div className="auth-header">
+                <h2>{activeText.createAccount}</h2>
+                <p className="auth-subtitle">{activeText.joinScholars}</p>
+              </div>
+
+              <form onSubmit={(e) => e.preventDefault()} className="auth-form">
+                <div className="input-group">
+                  <label>{activeText.fullNameLabel}</label>
+                  <div className="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <input 
+                      type="text" 
+                      value={registerName} 
+                      onChange={(e) => setRegisterName(e.target.value)} 
+                      placeholder={activeText.fullNamePlaceholder}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group">
+                  <label>{activeText.emailAddressLabel}</label>
+                  <div className="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <input 
+                      type="email" 
+                      value={registerEmail} 
+                      onChange={(e) => setRegisterEmail(e.target.value)} 
+                      placeholder="name@university.edu"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="input-group">
+                  <label>{activeText.phoneNumberLabel}</label>
+                  <div className="input-wrapper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <input 
+                      type="tel" 
+                      value={registerPhone} 
+                      onChange={(e) => setRegisterPhone(e.target.value)} 
+                      placeholder={activeText.phoneNumberPlaceholder}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="input-row-2col">
+                  <div className="input-group">
+                    <label>{activeText.passwordLabel}</label>
+                    <div className="input-wrapper">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                      <input 
+                        type={showPassword ? 'text' : 'password'} 
+                        value={registerPassword} 
+                        onChange={(e) => setRegisterPassword(e.target.value)} 
+                        placeholder="••••••••"
+                        required
+                      />
+                      <button 
+                        type="button" 
+                        className="pwd-toggle" 
+                        onClick={() => setShowPassword(!showPassword)}
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showPassword ? (
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                          </svg>
+                        ) : (
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="input-group">
+                    <label>{activeText.confirmPasswordLabel}</label>
+                    <div className="input-wrapper">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                      <input 
+                        type={showConfirmPassword ? 'text' : 'password'} 
+                        value={registerConfirmPassword} 
+                        onChange={(e) => setRegisterConfirmPassword(e.target.value)} 
+                        placeholder="••••••••"
+                        required
+                      />
+                      <button 
+                        type="button" 
+                        className="pwd-toggle" 
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showConfirmPassword ? (
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                          </svg>
+                        ) : (
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" className="btn-auth-primary btn-signup">
+                  {activeText.signUpBtn}
+                </button>
+
+                <div className="divider-or">
+                  <span>{activeText.orDivider}</span>
+                </div>
+
+                <button type="button" className="btn-auth-google">
+                  <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                  </svg>
+                  <span>{activeText.signUpWithGoogle}</span>
+                </button>
+              </form>
+
+              <p className="auth-footer">
+                {activeText.alreadyHaveAccount}{' '}
+                <span onClick={() => setCurrentPage('login')}>{activeText.signInBtn}</span>
+              </p>
+            </div>
+          </div>
         ) : (
           /* Render customized Landing Page view */
           <>
@@ -724,10 +1090,10 @@ function App() {
                   <a href="#universities" onClick={(e) => { e.preventDefault(); setCurrentPage('universities'); }}>
                     {activeText.navUniversities}
                   </a>
-                  <a href="#simulator" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}>
+                  <a href="#simulator" onClick={handleNavSimulator}>
                     {activeText.navSimulator}
                   </a>
-                  <a href="#ai-match" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); handleStartAIMatch(); }}>
+                  <a href="#ai-match" onClick={handleNavAiMatch}>
                     {activeText.navAiMatch}
                   </a>
                 </div>
