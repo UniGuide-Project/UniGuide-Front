@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import VanillaTilt from 'vanilla-tilt'
 import Univerlar from './components/univerlar/univerlar'
+import { useAuth } from './hooks/useAuth'
 import './App.scss'
 import logo from './assets/logo.png'
 
@@ -28,8 +29,10 @@ const appTranslations = {
     dontHaveAccount: 'Akkauntingiz yo\'qmi?',
     createAccount: 'Akkaunt Yaratish',
     joinScholars: 'Elita talabalar va professionallar tarmog\'iga qo\'shiling.',
-    fullNameLabel: 'TO\'LIQ ISM SHARIF',
-    fullNamePlaceholder: 'To\'liq ismingizni kiriting',
+    firstNameLabel: 'ISM',
+    firstNamePlaceholder: 'Ismingizni kiriting',
+    lastNameLabel: 'FAMILIYA',
+    lastNamePlaceholder: 'Familiyangizni kiriting',
     emailAddressLabel: 'ELEKTRON POCHTA MANZILI',
     emailAddressPlaceholder: 'name@university.edu',
     phoneNumberLabel: 'TELEFON RAQAMI',
@@ -110,8 +113,10 @@ const appTranslations = {
     dontHaveAccount: 'Don\'t have an account?',
     createAccount: 'Create Your Account',
     joinScholars: 'Join the elite global network of scholars and professionals.',
-    fullNameLabel: 'FULL NAME',
-    fullNamePlaceholder: 'Enter your legal name',
+    firstNameLabel: 'FIRST NAME',
+    firstNamePlaceholder: 'Enter your first name',
+    lastNameLabel: 'LAST NAME',
+    lastNamePlaceholder: 'Enter your last name',
     emailAddressLabel: 'EMAIL ADDRESS',
     emailAddressPlaceholder: 'name@university.edu',
     phoneNumberLabel: 'PHONE NUMBER',
@@ -191,8 +196,10 @@ const appTranslations = {
     dontHaveAccount: 'Нет аккаунта?',
     createAccount: 'Создайте аккаунт',
     joinScholars: 'Присоединяйтесь к элитной глобальной сети ученых и профессионалов.',
-    fullNameLabel: 'ПОЛНОЕ ИМЯ',
-    fullNamePlaceholder: 'Введите ваше имя',
+    firstNameLabel: 'ИМЯ',
+    firstNamePlaceholder: 'Введите ваше имя',
+    lastNameLabel: 'ФАМИЛИЯ',
+    lastNamePlaceholder: 'Введите вашу фамилию',
     emailAddressLabel: 'ЭЛЕКТРОННАЯ ПОЧТА',
     emailAddressPlaceholder: 'name@university.edu',
     phoneNumberLabel: 'НОМЕР ТЕЛЕФОНА',
@@ -263,11 +270,25 @@ function App() {
   const [loginEmail, setLoginEmail] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
   
-  const [registerName, setRegisterName] = useState('')
+  const [registerFirstName, setRegisterFirstName] = useState('')
+  const [registerLastName, setRegisterLastName] = useState('')
   const [registerEmail, setRegisterEmail] = useState('')
   const [registerPhone, setRegisterPhone] = useState('')
   const [registerPassword, setRegisterPassword] = useState('')
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState('')
+
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false)
+
+  const {
+    user,
+    isLoading,
+    authError,
+    authSuccess,
+    login,
+    register: registerApi,
+    logout,
+    clearMessages
+  } = useAuth()
 
   // Simulation variables for landing page
   const [examRunning, setExamRunning] = useState(false)
@@ -278,13 +299,22 @@ function App() {
 
   const tiltRef = useRef(null)
   const langSelectorRef = useRef(null)
+  const userSelectorRef = useRef(null)
   const activeText = appTranslations[currentLanguage] || appTranslations.uz
 
-  // Close dropdown on outside click
+  // Clear authentication messages on page transitions
+  useEffect(() => {
+    clearMessages();
+  }, [currentPage]);
+
+  // Close dropdowns on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (langSelectorRef.current && !langSelectorRef.current.contains(event.target)) {
         setLangDropdownOpen(false);
+      }
+      if (userSelectorRef.current && !userSelectorRef.current.contains(event.target)) {
+        setUserDropdownOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -358,6 +388,37 @@ function App() {
       }
     }, 30)
   }
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    const result = await login(loginEmail, loginPassword);
+    if (result.success) {
+      setLoginEmail('');
+      setLoginPassword('');
+      setCurrentPage('home');
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    const result = await registerApi({
+      email: registerEmail,
+      firstName: registerFirstName,
+      lastName: registerLastName,
+      phoneNumber: registerPhone,
+      password: registerPassword,
+      passwordConfirm: registerConfirmPassword
+    });
+    if (result.success) {
+      setRegisterFirstName('');
+      setRegisterLastName('');
+      setRegisterEmail('');
+      setRegisterPhone('');
+      setRegisterPassword('');
+      setRegisterConfirmPassword('');
+      setCurrentPage('home');
+    }
+  };
 
   const formatTime = (minutes) => {
     const hrs = Math.floor(minutes / 60)
@@ -529,33 +590,132 @@ function App() {
             )}
           </div>
 
-          {/* Login / Register CTA */}
-          <button 
-            className="dashboard-btn" 
-            onClick={() => setCurrentPage('login')}
-            style={{ 
-              background: currentPage === 'login' || currentPage === 'register' ? '#fff' : 'rgba(187, 225, 250, 0.95)', 
-              color: '#0f1014', 
-              borderColor: '#fff',
-              fontSize: '12px',
-              fontWeight: 800,
-              padding: '8px 20px',
-              boxShadow: currentPage === 'login' || currentPage === 'register' ? '0 0 15px rgba(255, 255, 255, 0.3)' : 'none'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#fff';
-              e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
-            }}
-            onMouseOut={(e) => {
-              if (currentPage !== 'login' && currentPage !== 'register') {
-                e.currentTarget.style.background = 'rgba(187, 225, 250, 0.95)';
-                e.currentTarget.style.boxShadow = 'none';
-              }
-            }}
-            aria-label="Login or Register"
-          >
-            {activeText.loginBtn}
-          </button>
+          {/* Login / Register CTA or User Dropdown */}
+          {user ? (
+            <div className="user-profile-menu-wrapper" ref={userSelectorRef} style={{ position: 'relative' }}>
+              <button 
+                className="dashboard-btn" 
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '8px', 
+                  background: 'rgba(187, 225, 250, 0.12)',
+                  color: '#fff',
+                  borderColor: 'rgba(187, 225, 250, 0.25)',
+                  padding: '8px 14px',
+                  borderRadius: 'var(--radius-default)'
+                }}
+                aria-label="User Profile"
+              >
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  background: 'linear-gradient(135deg, #bbe1fa, #3282b8)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: '#0f1014'
+                }}>
+                  {user.first_name ? `${user.first_name[0]}${user.last_name ? user.last_name[0] : ''}`.toUpperCase() : user.email[0].toUpperCase()}
+                </div>
+                <span style={{ fontSize: '11.5px', fontWeight: 700 }}>
+                  {user.first_name ? `${user.first_name} ${user.last_name ? user.last_name[0] + '.' : ''}` : user.email.split('@')[0]}
+                </span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ transform: userDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+
+              {userDropdownOpen && (
+                <div style={{
+                  position: 'absolute',
+                  top: '44px',
+                  right: '0',
+                  background: 'rgba(15, 76, 117, 0.95)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(187, 225, 250, 0.2)',
+                  borderRadius: 'var(--radius-md)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                  zIndex: '200',
+                  width: '220px',
+                  boxShadow: '0 8px 32px rgba(15, 76, 117, 0.4)',
+                  padding: '12px'
+                }}>
+                  <div style={{ borderBottom: '1px solid rgba(187, 225, 250, 0.15)', paddingBottom: '8px', marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>
+                      {user.first_name ? `${user.first_name} ${user.last_name}` : ''}
+                    </div>
+                    <div style={{ fontSize: '10px', color: 'rgba(187, 225, 250, 0.7)', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {user.email}
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11.5px', color: '#bbe1fa', marginBottom: '10px' }}>
+                    <span>Balans:</span>
+                    <span style={{ fontWeight: 800 }}>{user.balance || '0.00'} USD</span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      logout();
+                      setUserDropdownOpen(false);
+                      setCurrentPage('home');
+                    }}
+                    style={{
+                      width: '100%',
+                      background: 'rgba(234, 67, 53, 0.2)',
+                      border: '1px solid rgba(234, 67, 53, 0.3)',
+                      borderRadius: 'var(--radius-default)',
+                      padding: '8px',
+                      cursor: 'pointer',
+                      color: '#ff8a80',
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      textAlign: 'center',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.background = 'rgba(234, 67, 53, 0.35)'}
+                    onMouseOut={(e) => e.currentTarget.style.background = 'rgba(234, 67, 53, 0.2)'}
+                  >
+                    Tizimdan chiqish
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button 
+              className="dashboard-btn" 
+              onClick={() => setCurrentPage('login')}
+              style={{ 
+                background: currentPage === 'login' || currentPage === 'register' ? '#fff' : 'rgba(187, 225, 250, 0.95)', 
+                color: '#0f1014', 
+                borderColor: '#fff',
+                fontSize: '12px',
+                fontWeight: 800,
+                padding: '8px 20px',
+                boxShadow: currentPage === 'login' || currentPage === 'register' ? '0 0 15px rgba(255, 255, 255, 0.3)' : 'none'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = '#fff';
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 255, 255, 0.3)';
+              }}
+              onMouseOut={(e) => {
+                if (currentPage !== 'login' && currentPage !== 'register') {
+                  e.currentTarget.style.background = 'rgba(187, 225, 250, 0.95)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }
+              }}
+              aria-label="Login or Register"
+            >
+              {activeText.loginBtn}
+            </button>
+          )}
         </div>
       </header>
 
@@ -572,7 +732,27 @@ function App() {
                 <p className="auth-subtitle">{activeText.diveBackIn}</p>
               </div>
 
-              <form onSubmit={(e) => e.preventDefault()} className="auth-form">
+              <form onSubmit={handleLoginSubmit} className="auth-form">
+                {authError && (
+                  <div className="auth-alert error">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="12"></line>
+                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span>{authError}</span>
+                  </div>
+                )}
+                {authSuccess && (
+                  <div className="auth-alert success">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>{authSuccess}</span>
+                  </div>
+                )}
+
                 <div className="input-group">
                   <label>{activeText.emailOrUsername}</label>
                   <div className="input-wrapper">
@@ -628,8 +808,8 @@ function App() {
                   </div>
                 </div>
 
-                <button type="submit" className="btn-auth-primary btn-signin">
-                  {activeText.signInBtn}
+                <button type="submit" className="btn-auth-primary btn-signin" disabled={isLoading}>
+                  {isLoading ? 'Kirish...' : activeText.signInBtn}
                 </button>
 
                 <div className="divider-or">
@@ -662,21 +842,60 @@ function App() {
                 <p className="auth-subtitle">{activeText.joinScholars}</p>
               </div>
 
-              <form onSubmit={(e) => e.preventDefault()} className="auth-form">
-                <div className="input-group">
-                  <label>{activeText.fullNameLabel}</label>
-                  <div className="input-wrapper">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
+              <form onSubmit={handleRegisterSubmit} className="auth-form">
+                {authError && (
+                  <div className="auth-alert error">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="12"></line>
+                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
-                    <input 
-                      type="text" 
-                      value={registerName} 
-                      onChange={(e) => setRegisterName(e.target.value)} 
-                      placeholder={activeText.fullNamePlaceholder}
-                      required
-                    />
+                    <span>{authError}</span>
+                  </div>
+                )}
+                {authSuccess && (
+                  <div className="auth-alert success">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>{authSuccess}</span>
+                  </div>
+                )}
+
+                <div className="input-row-2col">
+                  <div className="input-group">
+                    <label>{activeText.firstNameLabel}</label>
+                    <div className="input-wrapper">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                      <input 
+                        type="text" 
+                        value={registerFirstName} 
+                        onChange={(e) => setRegisterFirstName(e.target.value)} 
+                        placeholder={activeText.firstNamePlaceholder}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="input-group">
+                    <label>{activeText.lastNameLabel}</label>
+                    <div className="input-wrapper">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="input-icon">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                      <input 
+                        type="text" 
+                        value={registerLastName} 
+                        onChange={(e) => setRegisterLastName(e.target.value)} 
+                        placeholder={activeText.lastNamePlaceholder}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -785,8 +1004,8 @@ function App() {
                   </div>
                 </div>
 
-                <button type="submit" className="btn-auth-primary btn-signup">
-                  {activeText.signUpBtn}
+                <button type="submit" className="btn-auth-primary btn-signup" disabled={isLoading}>
+                  {isLoading ? 'Yaratilmoqda...' : activeText.signUpBtn}
                 </button>
 
                 <div className="divider-or">
@@ -852,10 +1071,22 @@ function App() {
                   
                   <div className="sim-sidebar">
                     <div className="sim-profile">
-                      <div className="avatar">JR</div>
+                      <div className="avatar">
+                        {user 
+                          ? (user.first_name ? `${user.first_name[0]}${user.last_name ? user.last_name[0] : ''}`.toUpperCase() : user.email[0].toUpperCase())
+                          : 'JR'}
+                      </div>
                       <div className="profile-info">
-                        <span className="name">Jasur Rahimov</span>
-                        <span className="role">Science Candidate</span>
+                        <span className="name">
+                          {user 
+                            ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
+                            : 'Jasur Rahimov'}
+                        </span>
+                        <span className="role">
+                          {user 
+                            ? `Joined: ${new Date(user.date_joined).toLocaleDateString(currentLanguage === 'uz' ? 'uz-UZ' : currentLanguage === 'ru' ? 'ru-RU' : 'en-US', {month: 'short', year: 'numeric'})}`
+                            : 'Science Candidate'}
+                        </span>
                       </div>
                     </div>
 
