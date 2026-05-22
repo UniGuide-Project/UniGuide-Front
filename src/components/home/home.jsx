@@ -101,7 +101,7 @@ function Home() {
       <header className="navbar">
         <div className="logo" onClick={() => window.location.reload()}>
           <div className="logo-dot"></div>
-          <span>DTM Elite</span>
+          <span>UniGuide</span>
         </div>
 
         <nav>
@@ -417,7 +417,7 @@ function Home() {
             <div className="footer-brand">
               <div className="logo">
                 <div className="logo-dot"></div>
-                <span>DTM Elite</span>
+                <span>UniGuide</span>
               </div>
               <p>
                 Building the future of academic preparation and university matching.
