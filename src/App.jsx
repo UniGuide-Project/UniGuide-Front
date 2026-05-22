@@ -58,7 +58,7 @@ const appTranslations = {
     partnerUnis: 'Hamkor Universitetlar',
     mockTests: 'Topshirilgan Imtihonlar',
     
-    precisionTitle: 'Muvaffaqiyat Uchun Aniq Asboblar',
+    precisionTitle: 'Muvaffaqiyat uchun aniq vositalar',
     precisionSubtitle: 'O\'z akademik kelajagingizga ishonch bilan qadam qo\'yishingiz uchun kerakli barcha narsalar.',
     
     tool1Title: 'Universitetlar Ma\'lumotlar Bazasi',
@@ -256,6 +256,34 @@ function App() {
   const [currentLanguage, setCurrentLanguage] = useState('uz')
   const [currentPage, setCurrentPage] = useState('home') // Default to 'home' as requested by the user
   const [langDropdownOpen, setLangDropdownOpen] = useState(false)
+  const [loadingStage, setLoadingStage] = useState('loading') // 'loading' | 'transitioning' | 'completed'
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [loaderUnmounted, setLoaderUnmounted] = useState(false)
+
+  // Simulated loading timer for preloader
+  useEffect(() => {
+    if (loadingStage !== 'loading') return
+
+    const timer = setInterval(() => {
+      setLoadingProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer)
+          setLoadingStage('transitioning')
+          setTimeout(() => {
+            setLoadingStage('completed')
+            setTimeout(() => {
+              setLoaderUnmounted(true)
+            }, 600) // allow 600ms for preloader logo fadeout transition
+          }, 1200) // matches 1.2s logo smooth transition
+          return 100
+        }
+        const increment = Math.floor(Math.random() * 5) + 3 // realistic random increment
+        return Math.min(100, prev + increment)
+      })
+    }, 40) // fast but smooth progress bar increments
+
+    return () => clearInterval(timer)
+  }, [loadingStage])
 
   // Auth screen interactive states
   const [showPassword, setShowPassword] = useState(false)
@@ -418,6 +446,28 @@ function App() {
 
   return (
     <>
+      {/* Premium Preloader Overlay */}
+      {!loaderUnmounted && (
+        <>
+          <div className={`preloader-overlay ${loadingStage === 'transitioning' || loadingStage === 'completed' ? 'transitioning' : ''}`}>
+            <div className="preloader-content">
+              <div className="preloader-logo-placeholder"></div>
+              {loadingStage === 'loading' && (
+                <div className="preloader-progress-wrap">
+                  <div className="preloader-progress-bar" style={{ width: `${loadingProgress}%` }}></div>
+                </div>
+              )}
+            </div>
+          </div>
+          {/* Logo is positioned fixed outside overlay so it doesn't inherit parent opacity transition */}
+          <img 
+            src={logo} 
+            className={`preloader-logo ${loadingStage === 'transitioning' || loadingStage === 'completed' ? 'transitioning' : ''} ${loadingStage === 'completed' ? 'completed' : ''}`} 
+            alt="UniGuide Loading Logo" 
+          />
+        </>
+      )}
+
       {/* Technical Blueprint Grid Background */}
       <div className="grid-bg-container" ref={bgRef} aria-hidden="true">
         {/* Animated grid pattern */}
@@ -465,8 +515,19 @@ function App() {
       <header className="navbar">
         <div className="logo" onClick={() => { setCurrentPage('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           {/* <div className="logo-dot"></div> */}
-          <img src={logo} alt="Logo" />
-          <span>UniGuide</span>
+          <img 
+            src={logo} 
+            alt="Logo" 
+            style={{ 
+              opacity: (loadingStage === 'completed' || loaderUnmounted) ? 1 : 0
+            }} 
+          />
+          <span style={{ 
+            opacity: (loadingStage === 'completed' || loaderUnmounted) ? 1 : 0, 
+            transform: (loadingStage === 'completed' || loaderUnmounted) ? 'translateX(0)' : 'translateX(-12px)',
+            transition: 'opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)',
+            display: 'inline-block'
+          }}>UniGuide</span>
         </div>
 
         <nav>
@@ -866,8 +927,7 @@ function App() {
         ) : (
           /* Render customized Landing Page view */
           <>
-            <div className="hero-split-container">
-              <section className="hero-section">
+            <section className="hero-section">
                 <div className="intelligence-pill">
                   <span>{activeText.tag}</span>
                 </div>
@@ -1010,7 +1070,6 @@ function App() {
                   </div>
                 </div>
               </section>
-            </div>
 
             {/* Metrics cards */}
             <section className="stats-section">
