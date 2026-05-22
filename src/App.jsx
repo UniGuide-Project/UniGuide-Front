@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import VanillaTilt from 'vanilla-tilt'
 import Univerlar from './components/univerlar/univerlar'
+import Simulator from './components/simulator/simulator'
 import { useAuth } from './hooks/useAuth'
 import './App.scss'
 import logo from './assets/logo.png'
@@ -228,14 +229,8 @@ function App() {
   }
 
   const handleNavSimulator = (e) => {
-    if (e) e.preventDefault()
-    setCurrentPage('home')
-    setTimeout(() => {
-      const el = document.getElementById('simulator')
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }
-    }, 100)
+    if (e) e.preventDefault();
+    setCurrentPage('simulator');
   }
 
   const handleNavAiMatch = (e) => {
@@ -899,6 +894,8 @@ function App() {
               </p>
             </div>
           </div>
+        ) : currentPage === 'simulator' ? (
+          <Simulator activeText={activeText} />
         ) : (
           /* Render customized Landing Page view */
           <>
@@ -924,7 +921,7 @@ function App() {
                     </svg>
                   </button>
                   
-                  <button className="btn-secondary" onClick={() => setExamRunning(!examRunning)} aria-label="Toggle exam simulation">
+                  <button className="btn-secondary" onClick={handleNavSimulator} aria-label="Open simulator">
                     <span>{examRunning ? activeText.stopMockBtn : activeText.takeMockBtn}</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10"></circle>

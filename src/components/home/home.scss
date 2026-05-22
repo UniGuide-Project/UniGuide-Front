@@ -729,6 +729,7 @@
   width: 100%;
   background: rgba(14, 14, 15, 0.6);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-block: 1px solid rgba(187, 225, 250, 0.06);
   padding: 80px 24px;
   display: flex;
