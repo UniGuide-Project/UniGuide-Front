@@ -1,6 +1,8 @@
 @mixin glass-card($blur: 20px, $opacity: 0.4) {
   background: rgba(6, 26, 33, $opacity * 1.8);
+  /* autoprefixer: ignore next */
   backdrop-filter: blur($blur);
+  /* autoprefixer: ignore next */
   -webkit-backdrop-filter: blur($blur);
   border: 1px solid rgba(187, 225, 250, 0.18);
   border-radius: var(--radius-md);
@@ -91,6 +93,7 @@
         background: rgba(15, 76, 117, 0.15);
         border: 1px solid rgba(187, 225, 250, 0.15);
         border-radius: var(--radius-xl);
+  /* autoprefixer: ignore next */
         backdrop-filter: blur(10px);
         transition: all 0.3s;
 
@@ -121,6 +124,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+  /* autoprefixer: ignore next */
       backdrop-filter: blur(10px);
       transition: all 0.3s;
 
@@ -201,6 +205,7 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: #fff;
+  /* autoprefixer: ignore next */
         backdrop-filter: blur(10px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.15);
@@ -359,6 +364,7 @@
         font-size: 14px;
         font-weight: 600;
         cursor: pointer;
+  /* autoprefixer: ignore next */
         backdrop-filter: blur(15px);
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         

@@ -1,0 +1,446 @@
+{
+  "matematika": [
+    {
+      "id": 1,
+      "question": "Soddalashtiring: (x - 1)(x + 1) - x²",
+      "options": [
+        "-1",
+        "1",
+        "2x",
+        "0"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 2,
+      "question": "Tenglamani yeching: 2x + 5 = 15",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correct": "C"
+    },
+    {
+      "id": 3,
+      "question": "Hisoblang: log₂(16)",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "8"
+      ],
+      "correct": "C"
+    },
+    {
+      "id": 4,
+      "question": "y = x² funksiyaning hosilasini toping.",
+      "options": [
+        "x",
+        "2x",
+        "2",
+        "x³"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 5,
+      "question": "To'g'ri burchakli uchburchakning tomonlari 3, 4 va 5 bo'lsa, uning yuzini toping.",
+      "options": [
+        "6",
+        "12",
+        "10",
+        "8"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 6,
+      "question": "Arifmetik progressiyada a₁ = 3 va d = 2 bo'lsa, a₅ ni toping.",
+      "options": [
+        "9",
+        "11",
+        "13",
+        "15"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 7,
+      "question": "sin²(x) + cos²(x) ifodaning eng sodda qiymatini ko'rsating.",
+      "options": [
+        "0",
+        "-1",
+        "1",
+        "2"
+      ],
+      "correct": "C"
+    },
+    {
+      "id": 8,
+      "question": "Geometrik progressiyada b₁ = 2 va q = 3 bo'lsa, b₃ ni toping.",
+      "options": [
+        "6",
+        "12",
+        "18",
+        "24"
+      ],
+      "correct": "C"
+    },
+    {
+      "id": 9,
+      "question": "Tengsizlikni yeching: x - 3 > 0",
+      "options": [
+        "x < 3",
+        "x > 3",
+        "x = 3",
+        "x > 0"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 10,
+      "question": "f(x) = 3x - 1 bo'lsa, f(2) ning qiymatini toping.",
+      "options": [
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 11,
+      "question": "Integralni hisoblang: ∫ 2x dx",
+      "options": [
+        "x² + C",
+        "2x² + C",
+        "x + C",
+        "2 + C"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 12,
+      "question": "Kvadratning perimetri 24 sm bo'lsa, uning yuzini hisoblang.",
+      "options": [
+        "36 sm²",
+        "16 sm²",
+        "24 sm²",
+        "48 sm²"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 13,
+      "question": "x² - 5x + 6 = 0 kvadrat tenglamaning ildizlari ko'paytmasini toping.",
+      "options": [
+        "5",
+        "6",
+        "-5",
+        "-6"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 14,
+      "question": "Kasrni qisqartiring: (x² - 9) / (x - 3)",
+      "options": [
+        "x - 3",
+        "x + 3",
+        "x² + 3",
+        "x"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 15,
+      "question": "Doiraning radiusi 5 sm bo'lsa, uning yuzi qancha? (π = 3 deb oling)",
+      "options": [
+        "75 sm²",
+        "30 sm²",
+        "25 sm²",
+        "15 sm²"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 16,
+      "question": "Soddalashtiring: (2³ * 2⁴) / 2⁵",
+      "options": [
+        "2",
+        "4",
+        "8",
+        "16"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 17,
+      "question": "y = -x² + 4 parabolaning cho'qqisi (uchi) qaysi nuqtada joylashgan?",
+      "options": [
+        "(0, 0)",
+        "(0, 4)",
+        "(4, 0)",
+        "(2, 0)"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 18,
+      "question": "log₃(x) = 2 bo'lsa, x ning qiymatini aniqlang.",
+      "options": [
+        "6",
+        "9",
+        "8",
+        "27"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 19,
+      "question": "12 va 18 sonlarining eng katta umumiy bo'luvchisini (EKUB) toping.",
+      "options": [
+        "3",
+        "6",
+        "9",
+        "36"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 20,
+      "question": "Kombinatorika: 3 ta har xil kitobni kitob javoniga necha xil usulda taxlash mumkin?",
+      "options": [
+        "3",
+        "6",
+        "9",
+        "12"
+      ],
+      "correct": "B"
+    }
+  ],
+  "fizika": [
+    {
+      "id": 1,
+      "question": "Nyutonning ikkinchi qonuni formulasini ko'rsating.",
+      "options": [
+        "F = mg",
+        "F = ma",
+        "A = Fs",
+        "E = mc²"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 2,
+      "question": "Tezlikning xalqaro birliklar sistemasidagi (SI) o'lchov birligini toping.",
+      "options": [
+        "m/s",
+        "m/s²",
+        "kg*m/s",
+        "Joul"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 3,
+      "question": "Elastiklik kuchi uchun Guk qonuni formulasini ko'rsating.",
+      "options": [
+        "F = -kx",
+        "F = ma",
+        "p = mv",
+        "P = UI"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 4,
+      "question": "Bosimning o'lchov birligi nima?",
+      "options": [
+        "Nyuton",
+        "Joul",
+        "Paskal",
+        "Volt"
+      ],
+      "correct": "C"
+    },
+    {
+      "id": 5,
+      "question": "Tok kuchining o'lchov birligini ko'rsating.",
+      "options": [
+        "Volt",
+        "Amper",
+        "Om",
+        "Vatt"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 6,
+      "question": "Zanjirning bir qismi uchun Om qonuni formulasini toping.",
+      "options": [
+        "I = U/R",
+        "P = UI",
+        "R = ρ*l/S",
+        "Q = I²Rt"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 7,
+      "question": "Yer sirtidagi jismga ta'sir etuvchi og'irlik kuchi formulasi qaysi?",
+      "options": [
+        "F = ma",
+        "F = mg",
+        "F = kx",
+        "F = G*m₁m₂/r²"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 8,
+      "question": "Kinetik energiya formulasini toping.",
+      "options": [
+        "E = mgh",
+        "E = mv² / 2",
+        "E = kx² / 2",
+        "E = mc²"
+      ],
+      "correct": "B"
+    },
+    {
+      "id": 9,
+      "question": "Erkin tushish tezlanishining Yer yuzidagi o'rtacha qiymati taxminan qancha? (m/s²)",
+      "options": [
+        "9.8",
+        "10",
+        "8.8",
+        "1.6"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 10,
+      "question": "Kuch momenti formulasi qaysi javobda to'g'ri ko'rsatilgan?",
+      "options": [
+        "M = Fd",
+        "P = Fv",
+        "A = Fs",
+        "p = mv"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 11,
+      "question": "Elektr qarshiligining o'lchov birligini aniqlang.",
+      "options": [
+        "Om",
+        "Volt",
+        "Amper",
+        "Farad"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 12,
+      "question": "Yorug'likning vakuumdagi tarqalish tezligi taxminan qancha? (m/s)",
+      "options": [
+        "3*10⁸",
+        "3*10⁶",
+        "1.5*10⁸",
+        "3*10⁵"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 13,
+      "question": "Modda zichligi formulasi qaysi?",
+      "options": [
+        "ρ = m/V",
+        "ρ = mV",
+        "F = ρS",
+        "V = m/ρ"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 14,
+      "question": "Suyuqliklar va gazlardagi jismga ta'sir etuvchi itarib chiquvchi kuch qanday nomlanadi?",
+      "options": [
+        "Arximed kuchi",
+        "Kulon kuchi",
+        "Amper kuchi",
+        "Lorens kuchi"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 15,
+      "question": "Tebranish chastotasining o'lchov birligini ko'rsating.",
+      "options": [
+        "Gers",
+        "Sekund",
+        "Metr",
+        "Nyuton"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 16,
+      "question": "Issiqlik miqdorining xalqaro (SI) o'lchov birligi nima?",
+      "options": [
+        "Joul",
+        "Kaloriya",
+        "Vatt",
+        "Nyuton"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 17,
+      "question": "Kondensatorning elektr sig'imi birligini toping.",
+      "options": [
+        "Farad",
+        "Genri",
+        "Tesla",
+        "Om"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 18,
+      "question": "Ikkita nuqtaviy zaryad orasidagi o'zaro ta'sir kuchini ifodalovchi Kulon qonuni formulasini ko'rsating.",
+      "options": [
+        "F = k*q₁q₂/r²",
+        "F = qE",
+        "E = F/q",
+        "U = A/q"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 19,
+      "question": "Transformatorda qaysi fizik hodisa asos qilib olingan?",
+      "options": [
+        "Elektromagnit induksiya",
+        "Fotoeffekt",
+        "Issiqlik nurlanishi",
+        "Radioaktiv yemirilish"
+      ],
+      "correct": "A"
+    },
+    {
+      "id": 20,
+      "question": "Elektr kuchlanishining o'lchov birligi nima?",
+      "options": [
+        "Volt",
+        "Amper",
+        "Vatt",
+        "Joul"
+      ],
+      "correct": "A"
+    }
+  ]
+}

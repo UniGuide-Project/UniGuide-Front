@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import VanillaTilt from 'vanilla-tilt'
 import Univerlar from './components/univerlar/univerlar'
 import Simulator from './components/simulator/simulator'
+import Exam from './components/simulator/exam'
 import { useAuth } from './hooks/useAuth'
 import './App.scss'
 import logo from './assets/logo.png'
@@ -20,6 +21,7 @@ const appTranslations = {
 function App() {
   const [currentLanguage, setCurrentLanguage] = useState('uz')
   const [currentPage, setCurrentPage] = useState('home') // Default to 'home' as requested by the user
+  const [examSubjectText, setExamSubjectText] = useState('')
   const [langDropdownOpen, setLangDropdownOpen] = useState(false)
   const [loadingStage, setLoadingStage] = useState('loading') // 'loading' | 'transitioning' | 'completed'
   const [loadingProgress, setLoadingProgress] = useState(0)
@@ -588,7 +590,7 @@ function App() {
       <main className="app-container">
         {currentPage === 'universities' ? (
           /* Render localized Universities listing view */
-          <Univerlar lang={currentLanguage} />
+          <Univerlar lang={currentLanguage} activeText={activeText} />
         ) : currentPage === 'login' ? (
           /* Render Glassmorphic Login Card */
           <div className="auth-container">
@@ -895,7 +897,30 @@ function App() {
             </div>
           </div>
         ) : currentPage === 'simulator' ? (
-          <Simulator activeText={activeText} />
+          <Simulator 
+            activeText={activeText} 
+            onStart={(subjectText) => {
+              setExamSubjectText(subjectText);
+              setCurrentPage('exam');
+            }} 
+          />
+        ) : currentPage === 'exam' ? (
+          <Exam 
+            activeText={activeText} 
+            onExit={() => setCurrentPage('simulator')} 
+            subjectText={examSubjectText} 
+            onFinish={(score) => {
+              setSimulatedScore(score);
+              setCurrentPage('home');
+              setTimeout(() => {
+                const el = document.getElementById('simulator');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                handleStartAIMatch();
+              }, 300);
+            }}
+          />
         ) : (
           /* Render customized Landing Page view */
           <>

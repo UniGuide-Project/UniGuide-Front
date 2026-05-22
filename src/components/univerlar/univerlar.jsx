@@ -55,95 +55,7 @@ const locationLabels = {
   }
 };
 
-const translationsSet = {
-  uz: {
-    tag: 'Next-Gen Ta\'lim Intellekti',
-    title: 'O\'zbekiston oliy ta\'lim muassasalari, AI bilan boshqariladi.',
-    subtitle: 'Bizning Sun\'iy Intellekt yordamida universitetlarni moslashtirish tizimimiz va real vaqtdagi imtihon simulyatorimiz orqali ideal akademik yo\'lingizni toping.',
-    placeholder: 'Nomi, yo\'nalishi yoki joylashuvi bo\'yicha qidirish...',
-    filters: 'Filtrlar',
-    dtmCompatible: 'DTM mos keladi',
-    topRated: 'Yuqori reytingli',
-    stateType: 'Davlat OTM',
-    privateType: 'Xususiy OTM',
-    viewDetails: 'Batafsil ma\'lumot',
-    noResults: 'Hech qanday universitet topilmadi.',
-    backToList: 'Ro\'yxatga qaytish',
-    tabDescription: 'Tavsif',
-    tabFaculties: 'Fakultetlar & Ballar',
-    programsLabel: 'Dasturlar',
-    ratingLabel: 'Reyting balli',
-    typeLabel: 'Turi',
-    minContractLabel: 'Min. Kontrakt',
-    maxContractLabel: 'Maks. Kontrakt',
-    websiteLabel: 'Rasmiy veb-sayt',
-    visitWebsite: 'Oliygoh saytiga o\'tish',
-    grantScoreLabel: 'Davlat Granti Balli',
-    contractScoreLabel: 'To\'lov-Kontrakt Balli',
-    scoreNotAvailable: 'E’lon qilinmagan',
-    retryBtn: 'Qaytadan urinish',
-    loadError: 'Ma’lumotlarni backend API orqali yuklab bo‘lmadi',
-    loadingText: 'Universitetlar ma’lumotlar bazasi yuklanmoqda...'
-  },
-  en: {
-    tag: 'Next-Gen Education Intelligence',
-    title: 'Uzbekistan Higher Education Institutions, Guided by AI.',
-    subtitle: 'Find your ideal academic path with our AI-enhanced university matching system and real-time admission simulator.',
-    placeholder: 'Search by name, major, or location...',
-    filters: 'Filters',
-    dtmCompatible: 'DTM Compatible',
-    topRated: 'Top Rated',
-    stateType: 'State University',
-    privateType: 'Private University',
-    viewDetails: 'View Details',
-    noResults: 'No universities found.',
-    backToList: 'Back to List',
-    tabDescription: 'Description',
-    tabFaculties: 'Faculties & Scores',
-    programsLabel: 'Programs',
-    ratingLabel: 'Rating Score',
-    typeLabel: 'Type',
-    minContractLabel: 'Min. Contract',
-    maxContractLabel: 'Max. Contract',
-    websiteLabel: 'Official Website',
-    visitWebsite: 'Visit Institution Site',
-    grantScoreLabel: 'State Grant Score',
-    contractScoreLabel: 'Paid Contract Score',
-    scoreNotAvailable: 'Not Declared',
-    retryBtn: 'Try Again',
-    loadError: 'Failed to retrieve university records from backend API',
-    loadingText: 'Loading university database...'
-  },
-  ru: {
-    tag: 'Интеллект образования нового поколения',
-    title: 'ВУЗы Узбекистана под руководством ИИ.',
-    subtitle: 'Найдите свой идеальный академический путь с помощью нашей системы подбора университетов на базе ИИ и симулятора поступления в реальном времени.',
-    placeholder: 'Поиск по названию, направлению или локации...',
-    filters: 'Фильтры',
-    dtmCompatible: 'Совместимо с DTM',
-    topRated: 'Лучший выбор',
-    stateType: 'Гос. ВУЗ',
-    privateType: 'Частный ВУЗ',
-    viewDetails: 'Подробнее',
-    noResults: 'Университеты не найдены.',
-    backToList: 'Назад к списку',
-    tabDescription: 'Описание',
-    tabFaculties: 'Факультеты и Баллы',
-    programsLabel: 'Программы',
-    ratingLabel: 'Рейтинговый балл',
-    typeLabel: 'Тип',
-    minContractLabel: 'Мин. контракт',
-    maxContractLabel: 'Макс. контракт',
-    websiteLabel: 'Официальный сайт',
-    visitWebsite: 'Перейти на сайт ВУЗа',
-    grantScoreLabel: 'Балл на Грант',
-    contractScoreLabel: 'Балл на Контракт',
-    scoreNotAvailable: 'Не указан',
-    retryBtn: 'Повторить попытку',
-    loadError: 'Не удалось загрузить данные университетов с сервера',
-    loadingText: 'Загрузка базы данных университетов...'
-  }
-}
+
 
 // Consistent premium visual assets fallbacks
 const getFallbackImage = (uni) => {
@@ -275,7 +187,7 @@ const renderFacultyIcon = (iconType) => {
   }
 }
 
-function Univerlar({ lang }) {
+function Univerlar({ lang, activeText }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [universities, setUniversities] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -287,14 +199,15 @@ function Univerlar({ lang }) {
   const [detailTab, setDetailTab] = useState('description') // 'description' or 'faculties'
   const [expandedFaculties, setExpandedFaculties] = useState({})
 
-  const currentText = translationsSet[lang] || translationsSet.uz
+  const currentText = activeText;
 
-  // Fetch all universities from the API
-  const fetchUniversities = async () => {
+  // Fetch universities from the API with search query
+  const fetchUniversities = async (search = '') => {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch(`${API_BASE}/universities/`);
+      const url = search ? `${API_BASE}/universities/?search=${encodeURIComponent(search)}` : `${API_BASE}/universities/`;
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error('API server returned failure status');
       }
@@ -302,22 +215,23 @@ function Univerlar({ lang }) {
       setUniversities(data);
     } catch (err) {
       console.error('Error loading universities:', err);
-      setError(currentText.loadError);
+      setError(currentText.uniLoadError);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUniversities();
-  }, [lang]);
+    const handler = setTimeout(() => {
+      fetchUniversities(searchQuery);
+    }, 500);
+    return () => clearTimeout(handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang, searchQuery]);
 
   // Fetch details of selected university (with faculties list)
   useEffect(() => {
-    if (!activeUniversityId) {
-      setActiveUniDetails(null);
-      return;
-    }
+    if (!activeUniversityId) return;
 
     const fetchDetails = async () => {
       setIsLoadingDetails(true);
@@ -338,25 +252,33 @@ function Univerlar({ lang }) {
     fetchDetails();
   }, [activeUniversityId]);
 
-  // Localized query filtering (instant search UI response)
-  const filteredUniversities = universities.filter((uni) => {
-    const query = searchQuery.toLowerCase();
-    const locName = locationLabels[lang]?.[uni.location] || uni.location || '';
-    const typeLabel = uni.university_type === 'state' ? currentText.stateType : currentText.privateType;
-    
+  // If detailed university is loading, render a premium loading layout
+  if (activeUniversityId && (isLoadingDetails || !activeUniDetails)) {
     return (
-      uni.name.toLowerCase().includes(query) ||
-      locName.toLowerCase().includes(query) ||
-      typeLabel.toLowerCase().includes(query) ||
-      (uni.description && uni.description.toLowerCase().includes(query))
+      <section className="univerlar-section uni-detail-mode" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', gap: '16px' }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          border: '3px solid rgba(187, 225, 250, 0.1)',
+          borderTopColor: 'var(--light-blue)',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}></div>
+        <p style={{ color: 'var(--on-surface-variant)', fontSize: '14px', fontWeight: 600 }}>{currentText.uniLoadingText}</p>
+        <style>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </section>
     );
-  });
+  }
 
   // If detailed university is selected, render premium detail layout
   if (activeUniversityId && activeUniDetails) {
     const activeUni = activeUniDetails;
     const localizedLoc = locationLabels[lang]?.[activeUni.location] || activeUni.location || '';
-    const activeUniTypeLabel = activeUni.university_type === 'state' ? currentText.stateType : currentText.privateType;
+    const activeUniTypeLabel = activeUni.university_type === 'state' ? currentText.uniStateType : currentText.uniPrivateType;
 
     return (
       <section className="univerlar-section uni-detail-mode">
@@ -366,16 +288,17 @@ function Univerlar({ lang }) {
             className="back-btn"
             onClick={() => {
               setActiveUniversityId(null)
+              setActiveUniDetails(null)
               setDetailTab('description')
               setExpandedFaculties({})
             }}
-            aria-label={currentText.backToList}
+            aria-label={currentText.uniBackToList}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            <span>{currentText.backToList}</span>
+            <span>{currentText.uniBackToList}</span>
           </button>
         </div>
 
@@ -396,7 +319,7 @@ function Univerlar({ lang }) {
             className={`tab-link ${detailTab === 'description' ? 'active' : ''}`}
             onClick={() => setDetailTab('description')}
           >
-            {currentText.tabDescription}
+            {currentText.uniTabDescription}
           </button>
           <button
             role="tab"
@@ -404,7 +327,7 @@ function Univerlar({ lang }) {
             className={`tab-link ${detailTab === 'faculties' ? 'active' : ''}`}
             onClick={() => setDetailTab('faculties')}
           >
-            {currentText.tabFaculties}
+            {currentText.uniTabFaculties}
           </button>
         </div>
 
@@ -418,23 +341,23 @@ function Univerlar({ lang }) {
               <div className="uni-stats-grid">
                 <div className="uni-stat-card">
                   <span className="stat-value">{activeUniTypeLabel}</span>
-                  <span className="stat-label">{currentText.typeLabel}</span>
+                  <span className="stat-label">{currentText.uniTypeLabel}</span>
                 </div>
                 <div className="uni-stat-card">
                   <span className="stat-value">{activeUni.rating ? `${activeUni.rating} / 100` : 'N/A'}</span>
-                  <span className="stat-label">{currentText.ratingLabel}</span>
+                  <span className="stat-label">{currentText.uniRatingLabel}</span>
                 </div>
                 <div className="uni-stat-card">
                   <span className="stat-value" style={{ fontSize: '16px', fontWeight: 800 }}>
                     {formatCurrency(activeUni.min_contract, lang)}
                   </span>
-                  <span className="stat-label">{currentText.minContractLabel}</span>
+                  <span className="stat-label">{currentText.uniMinContractLabel}</span>
                 </div>
                 <div className="uni-stat-card">
                   <span className="stat-value" style={{ fontSize: '16px', fontWeight: 800 }}>
                     {formatCurrency(activeUni.max_contract, lang)}
                   </span>
-                  <span className="stat-label">{currentText.maxContractLabel}</span>
+                  <span className="stat-label">{currentText.uniMaxContractLabel}</span>
                 </div>
               </div>
 
@@ -453,7 +376,7 @@ function Univerlar({ lang }) {
                       <line x1="2" y1="12" x2="22" y2="12"></line>
                       <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                     </svg>
-                    <span>{currentText.visitWebsite}</span>
+                    <span>{currentText.uniVisitWebsite}</span>
                   </a>
                 </div>
               )}
@@ -518,15 +441,15 @@ function Univerlar({ lang }) {
                         {/* DTM score subcards */}
                         <div className="faculty-stats-row">
                           <div className="faculty-stat-subcard" style={{ borderLeft: '3px solid #4caf50' }}>
-                            <span className="subcard-label" style={{ color: '#81c784' }}>{currentText.grantScoreLabel}</span>
+                            <span className="subcard-label" style={{ color: '#81c784' }}>{currentText.uniGrantScoreLabel}</span>
                             <span className="subcard-val" style={{ fontSize: '20px', fontWeight: 800 }}>
-                              {fac.grant_score && fac.grant_score > 0 ? `${fac.grant_score} ball` : currentText.scoreNotAvailable}
+                              {fac.grant_score && fac.grant_score > 0 ? `${fac.grant_score} ball` : currentText.uniScoreNotAvailable}
                             </span>
                           </div>
                           <div className="faculty-stat-subcard" style={{ borderLeft: '3px solid #2196f3' }}>
-                            <span className="subcard-label" style={{ color: '#64b5f6' }}>{currentText.contractScoreLabel}</span>
+                            <span className="subcard-label" style={{ color: '#64b5f6' }}>{currentText.uniContractScoreLabel}</span>
                             <span className="subcard-val" style={{ fontSize: '20px', fontWeight: 800 }}>
-                              {fac.min_score && fac.min_score > 0 ? `${fac.min_score} ball` : currentText.scoreNotAvailable}
+                              {fac.min_score && fac.min_score > 0 ? `${fac.min_score} ball` : currentText.uniScoreNotAvailable}
                             </span>
                           </div>
                         </div>
@@ -534,7 +457,7 @@ function Univerlar({ lang }) {
                         {/* Faculty descriptions block */}
                         {fac.description && (
                           <div className="faculty-research-block">
-                            <span className="research-title">{currentText.tabDescription.toUpperCase()}</span>
+                            <span className="research-title">{currentText.uniTabDescription.toUpperCase()}</span>
                             <p className="research-text">{fac.description}</p>
                           </div>
                         )}
@@ -547,7 +470,7 @@ function Univerlar({ lang }) {
 
               {(!activeUni.faculties || activeUni.faculties.length === 0) && (
                 <p style={{ margin: '24px 0', fontSize: '14px', color: 'var(--on-surface-variant)', textAlign: 'center' }}>
-                  {currentText.noResults}
+                  {currentText.uniNoResults}
                 </p>
               )}
             </div>
@@ -563,10 +486,10 @@ function Univerlar({ lang }) {
       {/* Dynamic Header Block */}
       <div className="uni-header">
         <div className="intelligence-pill">
-          <span>⚡ {currentText.tag}</span>
+          <span>⚡ {currentText.uniTag}</span>
         </div>
-        <h2>{currentText.title}</h2>
-        <p>{currentText.subtitle}</p>
+        <h2>{currentText.uniTitle}</h2>
+        <p>{currentText.uniSubtitle}</p>
       </div>
 
       {/* Dynamic Search & Filter Row */}
@@ -579,7 +502,7 @@ function Univerlar({ lang }) {
           <input
             type="text"
             className="search-input"
-            placeholder={currentText.placeholder}
+            placeholder={currentText.uniPlaceholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search universities"
@@ -598,7 +521,7 @@ function Univerlar({ lang }) {
             <line x1="9" y1="8" x2="15" y2="8"></line>
             <line x1="17" y1="16" x2="23" y2="16"></line>
           </svg>
-          <span>{currentText.filters}</span>
+          <span>{currentText.uniFilters}</span>
         </button>
       </div>
 
@@ -613,7 +536,7 @@ function Univerlar({ lang }) {
             borderRadius: '50%',
             animation: 'spin 1s linear infinite'
           }}></div>
-          <p style={{ color: 'var(--on-surface-variant)', fontSize: '14px', fontWeight: 600 }}>{currentText.loadingText}</p>
+          <p style={{ color: 'var(--on-surface-variant)', fontSize: '14px', fontWeight: 600 }}>{currentText.uniLoadingText}</p>
           <style>{`
             @keyframes spin {
               to { transform: rotate(360deg); }
@@ -644,7 +567,7 @@ function Univerlar({ lang }) {
             className="filter-btn"
             style={{ margin: '0 auto', padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(234, 67, 53, 0.3)', color: '#ff8a80' }}
           >
-            {currentText.retryBtn}
+            {currentText.uniRetryBtn}
           </button>
         </div>
       )}
@@ -652,10 +575,10 @@ function Univerlar({ lang }) {
       {/* Grid of Universities */}
       {!isLoading && !error && (
         <div className="uni-grid">
-          {filteredUniversities.map((uni) => {
+          {universities.map((uni) => {
             const locName = locationLabels[lang]?.[uni.location] || uni.location || '';
             const isTopRated = uni.rating >= 90;
-            const uniTypeLabel = uni.university_type === 'state' ? currentText.stateType : currentText.privateType;
+            const uniTypeLabel = uni.university_type === 'state' ? currentText.uniStateType : currentText.uniPrivateType;
             
             return (
               <article
@@ -676,7 +599,7 @@ function Univerlar({ lang }) {
                   
                   {isTopRated && (
                     <span className="card-badge top-rated">
-                      {currentText.topRated}
+                      {currentText.uniTopRated}
                     </span>
                   )}
                 </div>
@@ -715,7 +638,7 @@ function Univerlar({ lang }) {
                         setActiveUniversityId(uni.id)
                       }}
                     >
-                      <span>{currentText.viewDetails}</span>
+                      <span>{currentText.uniViewDetails}</span>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -730,14 +653,14 @@ function Univerlar({ lang }) {
         </div>
       )}
 
-      {!isLoading && !error && filteredUniversities.length === 0 && (
+      {!isLoading && !error && universities.length === 0 && (
         <p style={{ margin: '36px 0', fontSize: '15px', color: 'var(--on-surface-variant)', textAlign: 'center' }}>
-          {currentText.noResults}
+          {currentText.uniNoResults}
         </p>
       )}
 
       {/* Pagination indicators */}
-      {!isLoading && !error && filteredUniversities.length > 0 && (
+      {!isLoading && !error && universities.length > 0 && (
         <div className="pagination-row" aria-label="Pagination Navigation">
           <button className="page-btn" aria-label="Previous page" disabled>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

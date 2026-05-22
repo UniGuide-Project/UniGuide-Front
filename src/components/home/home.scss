@@ -1,7 +1,9 @@
 // Glassmorphism and Apple Liquid Glass design mixins
 @mixin glass-card($blur: 20px, $opacity: 0.4) {
   background: rgba(6, 26, 33, $opacity * 1.8);
+  /* autoprefixer: ignore next */
   backdrop-filter: blur($blur);
+  /* autoprefixer: ignore next */
   -webkit-backdrop-filter: blur($blur);
   border: 1px solid rgba(187, 225, 250, 0.18);
   border-radius: var(--radius-md);
@@ -77,7 +79,9 @@
   align-items: center;
   padding: 0 40px;
   background: rgba(19, 19, 20, 0.7);
+  /* autoprefixer: ignore next */
   backdrop-filter: blur(20px);
+  /* autoprefixer: ignore next */
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(187, 225, 250, 0.06);
 
@@ -177,6 +181,7 @@
       border: 1px solid rgba(187, 225, 250, 0.2);
       border-radius: var(--radius-xl);
       cursor: pointer;
+  /* autoprefixer: ignore next */
       backdrop-filter: blur(10px);
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -316,6 +321,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+  /* autoprefixer: ignore next */
       backdrop-filter: blur(10px);
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
@@ -728,8 +734,10 @@
 .vision-section {
   width: 100%;
   background: rgba(14, 14, 15, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  /* autoprefixer: ignore next */
+  -webkit-backdrop-filter: blur(20px) !important;
+  /* autoprefixer: ignore next */
+  backdrop-filter: blur(20px) !important;
   border-block: 1px solid rgba(187, 225, 250, 0.06);
   padding: 80px 24px;
   display: flex;

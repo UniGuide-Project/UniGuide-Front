@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './simulator.scss';
 
-export default function Simulator({ activeText }) {
+export default function Simulator({ activeText, onStart }) {
   const [subject1, setSubject1] = useState('');
   const [subject2, setSubject2] = useState('');
   const [hasCert, setHasCert] = useState('no');
@@ -175,7 +175,25 @@ export default function Simulator({ activeText }) {
             <span className="stat-highlight">{activeText.simSummaryTime}</span> <span className="stat-dot">•</span>
             <span className="stat-highlight">{activeText.simSummaryScore}</span>
           </div>
-          <button className="btn-sim-start">
+          <button 
+            className="btn-sim-start"
+            onClick={() => {
+              if (subject1 && subject2) {
+                const sub1Label = subjects.find(s => s.id === subject1)?.label || '';
+                const sub2Label = subjects.find(s => s.id === subject2)?.label || '';
+                if (onStart) {
+                  onStart(`${sub1Label} • ${sub2Label}`);
+                }
+              } else {
+                const alertMsg = {
+                  uz: "Iltimos, ikkala fanni ham tanlang!",
+                  en: "Please select both subjects!",
+                  ru: "Пожалуйста, выберите оба предмета!"
+                }[activeText.navHome === 'Bosh sahifa' ? 'uz' : activeText.navHome === 'Home' ? 'en' : 'ru'] || "Iltimos, ikkala fanni ham tanlang!";
+                alert(alertMsg);
+              }
+            }}
+          >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{marginRight: '8px'}}><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             {activeText.simStartBtn}
           </button>
