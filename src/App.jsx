@@ -349,7 +349,7 @@ function App() {
   // Clear authentication messages on page transitions
   useEffect(() => {
     clearMessages();
-  }, [currentPage]);
+  }, [currentPage, clearMessages]);
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -1117,7 +1117,6 @@ function App() {
                     </div>
                   </div>
                 </div>
-
                 <button type="submit" className="btn-auth-primary btn-signup" disabled={isLoading}>
                   {isLoading ? 'Yaratilmoqda...' : activeText.signUpBtn}
                 </button>
@@ -1168,24 +1167,38 @@ function App() {
                     </svg>
                   </button>
                   
-                  <div className="sim-sidebar">
-                    <div className="sim-profile">
-                      <div className="avatar">
-                        {user 
-                          ? (user.first_name ? `${user.first_name[0]}${user.last_name ? user.last_name[0] : ''}`.toUpperCase() : user.email[0].toUpperCase())
-                          : 'JR'}
-                      </div>
-                      <div className="profile-info">
-                        <span className="name">
+                  <button className="btn-secondary" onClick={() => setExamRunning(!examRunning)} aria-label="Toggle exam simulation">
+                    <span>{examRunning ? activeText.stopMockBtn : activeText.takeMockBtn}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                    </svg>
+                  </button>
+                </div>
+              </section>
+
+              <section className="dashboard-container-wrap">
+                <div ref={tiltRef} className="tilted-dashboard-card" id="simulator">
+                  <div className="dashboard-simulator">
+                    <div className="sim-sidebar">
+                      <div className="sim-profile">
+                        <div className="avatar">
                           {user 
-                            ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
-                            : 'Jasur Rahimov'}
-                        </span>
-                        <span className="role">
-                          {user 
-                            ? `Joined: ${new Date(user.date_joined).toLocaleDateString(currentLanguage === 'uz' ? 'uz-UZ' : currentLanguage === 'ru' ? 'ru-RU' : 'en-US', {month: 'short', year: 'numeric'})}`
-                            : 'Science Candidate'}
-                        </span>
+                            ? (user.first_name ? `${user.first_name[0]}${user.last_name ? user.last_name[0] : ''}`.toUpperCase() : user.email[0].toUpperCase())
+                            : 'JR'}
+                        </div>
+                        <div className="profile-info">
+                          <span className="name">
+                            {user 
+                              ? `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email.split('@')[0]
+                              : 'Jasur Rahimov'}
+                          </span>
+                          <span className="role">
+                            {user 
+                              ? `Joined: ${new Date(user.date_joined).toLocaleDateString(currentLanguage === 'uz' ? 'uz-UZ' : currentLanguage === 'ru' ? 'ru-RU' : 'en-US', {month: 'short', year: 'numeric'})}`
+                              : 'Science Candidate'}
+                          </span>
+                        </div>
                       </div>
 
                       <ul className="sim-nav">
