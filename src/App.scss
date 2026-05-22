@@ -95,13 +95,10 @@
     color: #fff;
     cursor: pointer;
 
-    .logo-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--light-blue);
-      box-shadow: 0 0 10px var(--wave-blue);
-      animation: logo-pulse 2s infinite alternate;
+    img {
+      width: 42px;
+      height: 42px;
+      filter: drop-shadow(0 0 12px var(--wave-blue));
     }
   }
 

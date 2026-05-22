@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import VanillaTilt from 'vanilla-tilt'
 import Univerlar from './components/univerlar/univerlar'
 import './App.scss'
+import logo from './assets/logo.png'
 
 // Shared dictionary translations for Navbar, Landing Page, and Footer
 const appTranslations = {
@@ -303,8 +304,9 @@ function App() {
       {/* Navigation Header */}
       <header className="navbar">
         <div className="logo" onClick={() => setCurrentPage('home')}>
-          <div className="logo-dot"></div>
-          <span>DTM Elite</span>
+          {/* <div className="logo-dot"></div> */}
+          <img src={logo} alt="Logo" />
+          <span>UniGuide</span>
         </div>
 
         <nav>
