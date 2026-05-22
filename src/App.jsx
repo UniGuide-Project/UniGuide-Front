@@ -279,6 +279,22 @@ function App() {
   const tiltRef = useRef(null)
   const langSelectorRef = useRef(null)
   const activeText = appTranslations[currentLanguage] || appTranslations.uz
+  const bgRef = useRef(null)
+
+  // Technical blueprint grid mouse position tracker
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (bgRef.current) {
+        const rect = bgRef.current.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        bgRef.current.style.setProperty('--mouse-x', `${x}px`)
+        bgRef.current.style.setProperty('--mouse-y', `${y}px`)
+      }
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -402,10 +418,47 @@ function App() {
 
   return (
     <>
-      {/* Dynamic water background elements */}
-      <div className="caustics-wrapper" aria-hidden="true">
-        <div className="orb-1"></div>
-        <div className="orb-2"></div>
+      {/* Technical Blueprint Grid Background */}
+      <div className="grid-bg-container" ref={bgRef} aria-hidden="true">
+        {/* Animated grid pattern */}
+        <div className="grid-pattern"></div>
+        
+        {/* Soft floating orbs (parallax depth behind lines) */}
+        <div className="caustics-wrapper">
+          <div className="orb-1"></div>
+          <div className="orb-2"></div>
+        </div>
+
+        {/* Blueprint technical border accents */}
+        <div className="blueprint-accents">
+          <div className="accent-line top"></div>
+          <div className="accent-line bottom"></div>
+          <div className="accent-line left"></div>
+          <div className="accent-line right"></div>
+          <div className="accent-slashes-tl"></div>
+          <div className="accent-slashes-tr"></div>
+          <div className="accent-slashes-bl"></div>
+          <div className="accent-slashes-br"></div>
+        </div>
+
+        {/* Dynamic radial mouse tracker glow */}
+        <div className="grid-mouse-glow"></div>
+
+        {/* Twinkling glowing emerald-green grid blocks */}
+        <div className="twinkling-blocks">
+          <div className="tech-block block-1"></div>
+          <div className="tech-block block-2"></div>
+          <div className="tech-block block-3"></div>
+          <div className="tech-block block-4"></div>
+          <div className="tech-block block-5"></div>
+          <div className="tech-block block-6"></div>
+          <div className="tech-block block-7"></div>
+          <div className="tech-block block-8"></div>
+          <div className="tech-block block-9"></div>
+          <div className="tech-block block-10"></div>
+          <div className="tech-block block-11"></div>
+          <div className="tech-block block-12"></div>
+        </div>
       </div>
 
       {/* Navigation Header */}
@@ -813,149 +866,151 @@ function App() {
         ) : (
           /* Render customized Landing Page view */
           <>
-            <section className="hero-section">
-              <div className="intelligence-pill">
-                <span>{activeText.tag}</span>
-              </div>
-
-              <h1 className="display-title">
-                {activeText.heroTitlePart1}<br />
-                <span className="glow-text">{activeText.heroTitlePart2}</span>
-              </h1>
-
-              <p className="subtitle">
-                {activeText.heroSubtitle}
-              </p>
-
-              <div className="cta-group">
-                <button className="btn-primary" onClick={handleStartAIMatch} aria-label="Start matching process">
-                  <span>{activeText.startAiBtn}</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                  </svg>
-                </button>
-                
-                <button className="btn-secondary" onClick={() => setExamRunning(!examRunning)} aria-label="Toggle exam simulation">
-                  <span>{examRunning ? activeText.stopMockBtn : activeText.takeMockBtn}</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                  </svg>
-                </button>
-              </div>
-            </section>
-
-            {/* 3D Tilted simulated dashboard card */}
-            <section className="dashboard-container-wrap">
-              <div ref={tiltRef} className="tilted-dashboard-card" id="simulator">
-                <div className="dashboard-simulator">
-                  
-                  <div className="sim-sidebar">
-                    <div className="sim-profile">
-                      <div className="avatar">JR</div>
-                      <div className="profile-info">
-                        <span className="name">Jasur Rahimov</span>
-                        <span className="role">Science Candidate</span>
-                      </div>
-                    </div>
-
-                    <ul className="sim-nav">
-                      <li className="active">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-                        Dashboard
-                      </li>
-                      <li>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        DTM Exams
-                      </li>
-                      <li onClick={handleStartAIMatch}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                        AI Matching
-                      </li>
-                      <li>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                        Analytics
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="sim-body">
-                    <div className="sim-header">
-                      <h3>{activeText.performancePortal}</h3>
-                      <div className="tag">
-                        {examRunning ? `${activeText.statusActive}: ${formatTime(timeRemaining)}` : activeText.statusStandby}
-                      </div>
-                    </div>
-
-                    <div className="sim-grid">
-                      <div className="sim-chart-card">
-                        <div className="chart-info">
-                          <span className="label">{activeText.dtmHistory}</span>
-                          <span className="val">{simulatedScore} pts / 189 max</span>
-                        </div>
-
-                        <svg className="svg-chart" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg">
-                          <defs>
-                            <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#bbe1fa" />
-                              <stop offset="100%" stopColor="#3282b8" />
-                            </linearGradient>
-                            <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#3282b8" stopOpacity="0.3" />
-                              <stop offset="100%" stopColor="#0f4c75" stopOpacity="0" />
-                            </linearGradient>
-                          </defs>
-                          <line x1="0" y1="20" x2="320" y2="20" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
-                          <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
-                          <line x1="0" y1="100" x2="320" y2="100" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
-                          <path className="area" d="M 0 120 L 0 95 Q 50 60 90 70 T 170 30 T 260 55 T 320 15 L 320 120 Z" />
-                          <path className="line" d="M 0 95 Q 50 60 90 70 T 170 30 T 260 55 T 320 15" />
-                          <circle cx="320" cy="15" r="4" fill="#bbe1fa" />
-                          <circle cx="320" cy="15" r="8" stroke="rgba(187, 225, 250, 0.4)" strokeWidth="2" fill="none" />
-                        </svg>
-                      </div>
-
-                      <div className="sim-radar-card">
-                        <span className="title">{activeText.matchProb}</span>
-                        <div className="radial-progress">
-                          <svg width="90" height="90" viewBox="0 0 100 100">
-                            <circle className="circle-bg" cx="50" cy="50" r="40" />
-                            <circle 
-                              className="circle-progress" 
-                              cx="50" 
-                              cy="50" 
-                              r="40" 
-                              style={{
-                                strokeDasharray: '251.2',
-                                strokeDashoffset: `${251.2 - (251.2 * aiMatchProbability) / 100}`
-                              }}
-                            />
-                          </svg>
-                          <span className="pct">{aiMatchProbability}%</span>
-                        </div>
-                        <span className="match-lbl" style={{fontSize: '9px', textTransform: 'uppercase'}}>{selectedUniversity.split(' ').slice(0, 3).join(' ')}</span>
-                      </div>
-                    </div>
-
-                    <div style={{
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'center', 
-                      padding: '12px 14px', 
-                      background: 'rgba(187,225,250,0.03)', 
-                      border: '1px dashed rgba(187,225,250,0.1)', 
-                      borderRadius: 'var(--radius-default)',
-                      fontSize: '11px',
-                      color: 'var(--on-surface-variant)'
-                    }}>
-                      <span dangerouslySetInnerHTML={{ __html: activeText.tipText }}></span>
-                      <span style={{color: '#fff', fontWeight: 600}}>{activeText.uniSelected}: {selectedUniversity.split(' ').slice(0, 2).join(' ')}</span>
-                    </div>
-                  </div>
-
+            <div className="hero-split-container">
+              <section className="hero-section">
+                <div className="intelligence-pill">
+                  <span>{activeText.tag}</span>
                 </div>
-              </div>
-            </section>
+
+                <h1 className="display-title">
+                  {activeText.heroTitlePart1}<br />
+                  <span className="glow-text">{activeText.heroTitlePart2}</span>
+                </h1>
+
+                <p className="subtitle">
+                  {activeText.heroSubtitle}
+                </p>
+
+                <div className="cta-group">
+                  <button className="btn-primary" onClick={handleStartAIMatch} aria-label="Start matching process">
+                    <span>{activeText.startAiBtn}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  </button>
+                  
+                  <button className="btn-secondary" onClick={() => setExamRunning(!examRunning)} aria-label="Toggle exam simulation">
+                    <span>{examRunning ? activeText.stopMockBtn : activeText.takeMockBtn}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                  </button>
+                </div>
+              </section>
+
+              {/* 3D Tilted simulated dashboard card */}
+              <section className="dashboard-container-wrap">
+                <div ref={tiltRef} className="tilted-dashboard-card" id="simulator">
+                  <div className="dashboard-simulator">
+                    
+                    <div className="sim-sidebar">
+                      <div className="sim-profile">
+                        <div className="avatar">JR</div>
+                        <div className="profile-info">
+                          <span className="name">Jasur Rahimov</span>
+                          <span className="role">Science Candidate</span>
+                        </div>
+                      </div>
+
+                      <ul className="sim-nav">
+                        <li className="active">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                          Dashboard
+                        </li>
+                        <li>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                          DTM Exams
+                        </li>
+                        <li onClick={handleStartAIMatch}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                          AI Matching
+                        </li>
+                        <li>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '8px'}}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                          Analytics
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="sim-body">
+                      <div className="sim-header">
+                        <h3>{activeText.performancePortal}</h3>
+                        <div className="tag">
+                          {examRunning ? `${activeText.statusActive}: ${formatTime(timeRemaining)}` : activeText.statusStandby}
+                        </div>
+                      </div>
+
+                      <div className="sim-grid">
+                        <div className="sim-chart-card">
+                          <div className="chart-info">
+                            <span className="label">{activeText.dtmHistory}</span>
+                            <span className="val">{simulatedScore} pts / 189 max</span>
+                          </div>
+
+                          <svg className="svg-chart" viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                              <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#bbe1fa" />
+                                <stop offset="100%" stopColor="#3282b8" />
+                              </linearGradient>
+                              <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#3282b8" stopOpacity="0.3" />
+                                <stop offset="100%" stopColor="#0f4c75" stopOpacity="0" />
+                              </linearGradient>
+                            </defs>
+                            <line x1="0" y1="20" x2="320" y2="20" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                            <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                            <line x1="0" y1="100" x2="320" y2="100" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                            <path className="area" d="M 0 120 L 0 95 Q 50 60 90 70 T 170 30 T 260 55 T 320 15 L 320 120 Z" />
+                            <path className="line" d="M 0 95 Q 50 60 90 70 T 170 30 T 260 55 T 320 15" />
+                            <circle cx="320" cy="15" r="4" fill="#bbe1fa" />
+                            <circle cx="320" cy="15" r="8" stroke="rgba(187, 225, 250, 0.4)" strokeWidth="2" fill="none" />
+                          </svg>
+                        </div>
+
+                        <div className="sim-radar-card">
+                          <span className="title">{activeText.matchProb}</span>
+                          <div className="radial-progress">
+                            <svg width="90" height="90" viewBox="0 0 100 100">
+                              <circle className="circle-bg" cx="50" cy="50" r="40" />
+                              <circle 
+                                className="circle-progress" 
+                                cx="50" 
+                                cy="50" 
+                                r="40" 
+                                style={{
+                                  strokeDasharray: '251.2',
+                                  strokeDashoffset: `${251.2 - (251.2 * aiMatchProbability) / 100}`
+                                }}
+                              />
+                            </svg>
+                            <span className="pct">{aiMatchProbability}%</span>
+                          </div>
+                          <span className="match-lbl" style={{fontSize: '9px', textTransform: 'uppercase'}}>{selectedUniversity.split(' ').slice(0, 3).join(' ')}</span>
+                        </div>
+                      </div>
+
+                      <div style={{
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        padding: '12px 14px', 
+                        background: 'rgba(187,225,250,0.03)', 
+                        border: '1px dashed rgba(187,225,250,0.1)', 
+                        borderRadius: 'var(--radius-default)',
+                        fontSize: '11px',
+                        color: 'var(--on-surface-variant)'
+                      }}>
+                        <span dangerouslySetInnerHTML={{ __html: activeText.tipText }}></span>
+                        <span style={{color: '#fff', fontWeight: 600}}>{activeText.uniSelected}: {selectedUniversity.split(' ').slice(0, 2).join(' ')}</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </section>
+            </div>
 
             {/* Metrics cards */}
             <section className="stats-section">
@@ -1075,8 +1130,8 @@ function App() {
           <div className="footer-top">
             <div className="footer-brand">
               <div className="logo">
-                <div className="logo-dot"></div>
-                <span>DTM Elite</span>
+                <img src={logo} alt="logo" />
+                <span>UniGuide</span>
               </div>
               <p>{activeText.footerDesc}</p>
             </div>
